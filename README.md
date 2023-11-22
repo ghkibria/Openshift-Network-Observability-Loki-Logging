@@ -8,8 +8,11 @@ Prerequisites
 SNO or compact cluster running with
 - Loki/ODF
 - no Loki setup
+  
 Ensure you have access to the cluster as a user with the cluster-admin role.
-helpful RH docs link
+
+Helpful RH docs links
+
 https://docs.openshift.com/container-platform/4.14/network_observability/installing-operators.html#network-observability-without-loki_network_observability
 https://docs.openshift.com/container-platform/4.14/network_observability/configuring-operator.html#network-observability-flowcollector-view_network_observability
 https://docs.openshift.com/container-platform/4.14/network_observability/understanding-network-observability-operator.html
