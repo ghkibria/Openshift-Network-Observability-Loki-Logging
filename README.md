@@ -342,3 +342,4 @@ flowlogs-pipeline-fk55n        1/1     Running   1          20d
 flowlogs-pipeline-nmh87        1/1     Running   1          20d
 flowlogs-pipeline-xsghk        1/1     Running   1          20d
 ```
+Create the flow collecter from GUI or CLI, example from cli
