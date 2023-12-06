@@ -50,7 +50,7 @@ Steps to build Loki, we can do it from both OCP console or CLI
 4. Create an ObjectBucketClaim in netobserv namespace
    
 loki-bucket-odf.yaml
-
+```yaml
 apiVersion: objectbucket.io/v1alpha1
 kind: ObjectBucketClaim
 metadata:
@@ -59,16 +59,17 @@ metadata:
 spec:
   generateBucketName: loki-bucket-odf
   storageClassName: openshift-storage.noobaa.io 
-
+```
+```bash
 oc -n netobserv get obc
 NAME              STORAGE-CLASS                 PHASE   AGE
 loki-bucket-odf   openshift-storage.noobaa.io   Bound   8d
-
+```
 
 5. Create an Object Storage secret with keys as follows
    
 Get bucket properties from the associated ConfigMap
-
+```bash
 BUCKET_HOST=$(oc get -n netobserv configmap loki-bucket-odf -o jsonpath='{.data.BUCKET_HOST}')
 BUCKET_NAME=$(oc get -n netobserv configmap loki-bucket-odf -o jsonpath='{.data.BUCKET_NAME}')
 BUCKET_PORT=$(oc get -n netobserv configmap loki-bucket-odf -o jsonpath='{.data.BUCKET_PORT}')
@@ -80,18 +81,19 @@ SECRET_ACCESS_KEY=$(oc get -n netobserv secret loki-bucket-odf -o jsonpath='{.da
 
 Start create lokstack secret
 oc create -n netobserv secret generic lokistack-dev-odf --from-literal=access_key_id="${ACCESS_KEY_ID}" --from-literal=access_key_secret="${SECRET_ACCESS_KEY}" --from-literal=bucketnames="${BUCKET_NAME}"  --from-literal=endpoint="https://${BUCKET_HOST}:${BUCKET_PORT}"
-
+```
 secret.sh
-
+```bash
 BUCKET_HOST=$(oc get -n netobserv configmap loki-bucket-odf -o jsonpath='{.data.BUCKET_HOST}')
 BUCKET_NAME=$(oc get -n netobserv configmap loki-bucket-odf -o jsonpath='{.data.BUCKET_NAME}')
 BUCKET_PORT=$(oc get -n netobserv configmap loki-bucket-odf -o jsonpath='{.data.BUCKET_PORT}')
 
 ACCESS_KEY_ID=$(oc get -n netobserv secret loki-bucket-odf -o jsonpath='{.data.AWS_ACCESS_KEY_ID}' | base64 -d)
 SECRET_ACCESS_KEY=$(oc get -n netobserv secret loki-bucket-odf -o jsonpath='{.data.AWS_SECRET_ACCESS_KEY}' | base64 -d)
-
+```
+```bash
 oc create -n netobserv secret generic lokistack-dev-odf --from-literal=access_key_id="${ACCESS_KEY_ID}" --from-literal=access_key_secret="${SECRET_ACCESS_KEY}" --from-literal=bucketnames="${BUCKET_NAME}"  --from-literal=endpoint="https://${BUCKET_HOST}:${BUCKET_PORT}"
-
+```
 Run the file
 bash secret.sh
 
@@ -102,7 +104,7 @@ loki-bucket-odf                     Opaque                                2     
 6. Create an instance of LokiStack by referencing the secret name and type as s3
 
 loki-stack-cr.yaml
-
+```yaml
 apiVersion: loki.grafana.com/v1
 kind: LokiStack
 metadata:
@@ -119,7 +121,9 @@ spec:
   storageClassName: ocs-external-storagecluster-cephfs
   tenants:
     mode: openshift-network
-    
+```    
+
+```bash
 oc -n netobserv get po
 
 NAME                                   READY   STATUS    RESTARTS   AGE
@@ -139,11 +143,11 @@ loki-querier-578cfd6787-k92nq          1/1     Running   0          8d
 loki-query-frontend-84bd49b6db-762hj   1/1     Running   0          8d
 loki-query-frontend-84bd49b6db-f2cdj   1/1     Running   0          8d
 netobserv-plugin-5cdb5649bd-kxq62      1/1     Running   0          8d
-
+```
 7. Install the role file in netobserv namespace
    
 ClusterRole reader yaml
-
+```yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -157,9 +161,9 @@ rules:
   - logs
   verbs:
   - 'get'
-
+```
 ClusterRole writer yaml
-
+```yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -173,9 +177,9 @@ rules:
   - logs
   verbs:
   - 'create'
-
+```
 ClusterRoleBinding yaml
-
+```yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -191,9 +195,9 @@ subjects:
 - kind: ServiceAccount
   name: flowlogs-pipeline-transformer
   namespace: netobserv
-
+```
 8. Install the the Network Observability Operator from OCP console or CLI
-
+```bash
 oc get pods -n netobserv
 NAME                                   READY   STATUS    RESTARTS   AGE
 flowlogs-pipeline-qphfs                1/1     Running   0          8d
@@ -211,12 +215,12 @@ loki-querier-578cfd6787-k92nq          1/1     Running   0          8d
 loki-query-frontend-84bd49b6db-762hj   1/1     Running   0          8d
 loki-query-frontend-84bd49b6db-f2cdj   1/1     Running   0          8d
 netobserv-plugin-5cdb5649bd-kxq62      1/1     Running   0          8d
-
+```
 
 10. Create the flow collecter from GUI or CLI, example from cli
     
 flow_collector.yaml
-
+```yaml
 apiVersion: flows.netobserv.io/v1beta1
 kind: FlowCollector
 metadata:
@@ -283,9 +287,10 @@ spec:
     - name: Services network
       filter:
         dst_kind: 'Service'
+```
 
 oc get flowcollector/cluster
-
+```bash
 NAME      AGENT   SAMPLING (EBPF)   DEPLOYMENT MODEL   STATUS
 cluster   EBPF    50                DIRECT             Ready
 
@@ -320,6 +325,6 @@ loki-query-frontend-84bd49b6db-762hj   1/1     Running   0          8d
 loki-query-frontend-84bd49b6db-f2cdj   1/1     Running   0          8d
 netobserv-plugin-5cdb5649bd-kxq62      1/1     Running   0          8d
 
-
+```
 
 
