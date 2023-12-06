@@ -19,7 +19,7 @@ Helpful RH docs links
  
 Node details to be used for this activity
 
-Single node SNO without Loki
+Single node SNO with Loki, connected to CEPH
 ```bash
 oc get nodes
 
@@ -29,7 +29,7 @@ master.sno-demo.hubcluster-1.lab.eng.cert.redhat.com   Ready    control-plane,ma
 
 ```
 
-Compact cluster with Loki seup
+Compact cluster without Loki seup
 ```bash
 NAME                                                STATUS   ROLES                         AGE    VERSION
 
@@ -102,7 +102,7 @@ oc -n netobserv get secret
 NAME                                TYPE                                  DATA   AGE
 loki-bucket-odf                     Opaque                                2      8d
 
-6. Create an instance of LokiStack by referencing the secret name and type as s3
+5. Create an instance of LokiStack by referencing the secret name and type as s3
 
 loki-stack-cr.yaml
 ```yaml
@@ -145,7 +145,7 @@ loki-query-frontend-84bd49b6db-762hj   1/1     Running   0          8d
 loki-query-frontend-84bd49b6db-f2cdj   1/1     Running   0          8d
 netobserv-plugin-5cdb5649bd-kxq62      1/1     Running   0          8d
 ```
-7. Install the role file in netobserv namespace
+6. Install the role file in netobserv namespace
    
 ClusterRole reader yaml
 ```yaml
@@ -197,7 +197,7 @@ subjects:
   name: flowlogs-pipeline-transformer
   namespace: netobserv
 ```
-8. Install the the Network Observability Operator from OCP console or CLI
+7. Install the the Network Observability Operator from OCP console or CLI
 ```bash
 oc get pods -n netobserv
 NAME                                   READY   STATUS    RESTARTS   AGE
@@ -218,7 +218,7 @@ loki-query-frontend-84bd49b6db-f2cdj   1/1     Running   0          8d
 netobserv-plugin-5cdb5649bd-kxq62      1/1     Running   0          8d
 ```
 
-10. Create the flow collecter from GUI or CLI, example from cli
+8. Create the flow collecter from GUI or CLI, example from cli
     
 flow_collector.yaml
 ```yaml
@@ -327,5 +327,5 @@ loki-query-frontend-84bd49b6db-f2cdj   1/1     Running   0          8d
 netobserv-plugin-5cdb5649bd-kxq62      1/1     Running   0          8d
 
 ```
-
+Verify Network-Observability operator without Loki-Logging
 
