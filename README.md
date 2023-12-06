@@ -48,9 +48,10 @@ Steps to build Loki, we can do it from both OCP console or CLI
 2. Connect to CEPH storage
 3. Install Loki operator
 4. Create an ObjectBucketClaim in netobserv namespace
-   
+
+```yaml   
 loki-bucket-odf.yaml
-```yaml
+
 apiVersion: objectbucket.io/v1alpha1
 kind: ObjectBucketClaim
 metadata:
@@ -66,7 +67,7 @@ NAME              STORAGE-CLASS                 PHASE   AGE
 loki-bucket-odf   openshift-storage.noobaa.io   Bound   8d
 ```
 
-5. Create an Object Storage secret with keys as follows
+### Create an Object Storage secret with keys as follows
    
 Get bucket properties from the associated ConfigMap
 ```bash
