@@ -14,8 +14,9 @@ Ensure you have access to the cluster as a user with the cluster-admin role.
 Helpful RH docs links
 
 [network observability](https://docs.openshift.com/container-platform/4.14/network_observability/installing-operators.html#network-observability-without-loki_network_observability)
-https://docs.openshift.com/container-platform/4.14/network_observability/configuring-operator.html#network-observability-flowcollector-view_network_observability
-https://docs.openshift.com/container-platform/4.14/network_observability/understanding-network-observability-operator.html
+[flow collector](https://docs.openshift.com/container-platform/4.14/network_observability/configuring-operator.html#network-observability-flowcollector-view_network_observability)
+
+[network operator](https://docs.openshift.com/container-platform/4.14/network_observability/understanding-network-observability-operator.html)
 
 Node details to be used for this activity
 
