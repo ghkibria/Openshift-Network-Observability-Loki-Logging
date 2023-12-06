@@ -17,6 +17,9 @@ Helpful RH docs links
  [flow collector](https://docs.openshift.com/container-platform/4.14/network_observability/configuring-operator.html#network-observability-flowcollector-view_network_observability)    
 [network operator](https://docs.openshift.com/container-platform/4.14/network_observability/understanding-network-observability-operator.html)
  
+Notes:
+We can use Network Observability without Loki by not performing the Loki installation steps and skipping directly to "Installing the Network Observability Operator". If we only want to export flows to a Kafka consumer or IPFIX collector, or we only need dashboard metrics, then we do not need to install Loki or provide storage for Loki. Without Loki, there won’t be a Network Traffic panel under Observe, which means there is no overview charts, flow table, or topology.
+
 Node details to be used for this activity
 
 Single node SNO with Loki, connected to CEPH
@@ -329,3 +332,13 @@ netobserv-plugin-5cdb5649bd-kxq62      1/1     Running   0          8d
 ```
 Verify Network-Observability operator without Loki-Logging
 
+We can use Network Observability without Loki by not performing the Loki installation steps. Installing the Network Observability Operator from OCP Console or CLI. Without Loki, there won’t be a Network Traffic panel under Observe, which means there is no overview charts, flow table, or topology.
+
+### Install the the Network Observability Operator from OCP console or CLI
+oc get po -n netobserv
+```bash
+NAME                           READY   STATUS    RESTARTS   AGE
+flowlogs-pipeline-fk55n        1/1     Running   1          20d
+flowlogs-pipeline-nmh87        1/1     Running   1          20d
+flowlogs-pipeline-xsghk        1/1     Running   1          20d
+```
